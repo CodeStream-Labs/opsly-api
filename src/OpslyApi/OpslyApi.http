@@ -1,0 +1,6 @@
+@OpslyApi_HostAddress = http://localhost:5242
+
+GET {{OpslyApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
