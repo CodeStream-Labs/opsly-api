@@ -33,6 +33,12 @@ namespace OpslyApi
             builder.Services.AddSwaggerGen();
             builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
+            builder.Services.AddRouting(options =>
+            {
+                options.LowercaseUrls = true;
+                options.LowercaseQueryStrings = true;
+            });
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -47,6 +53,8 @@ namespace OpslyApi
                         options.SwaggerEndpoint(
                             $"/swagger/{description.GroupName}/swagger.json",
                             description.GroupName.ToUpperInvariant());
+                        options.DocumentTitle = "Opsly API Docs";
+                        options.RoutePrefix = string.Empty;
                     }
                 });
             }

@@ -22,7 +22,18 @@ namespace OpslyApi.Configurations
                 {
                     Title = $"Opsly API {description.ApiVersion}",
                     Version = description.ApiVersion.ToString(),
-                    Description = "Plataforma de orquestração de tarefas automatizadas (inspirada no Rundeck)."
+                    Description = "Plataforma de orquestração de tarefas automatizadas (inspirada no Rundeck).",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Equipe CodeStream Labs",
+                        Email = "contato@cslabs.dev",
+                        Url = new Uri("https://github.com/CodeStream-Labs")
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "MIT License",
+                        Url = new Uri("https://opensource.org/licenses/MIT")
+                    }
                 });
             }
         }

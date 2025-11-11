@@ -5,7 +5,7 @@ using OpslyApi.DTOs.Tasks;
 
 namespace OpslyApi.Controllers.v1
 {
-    public class TaskController(ILogger<TaskController> logger) : BaseController(logger)
+    public class TasksController(ILogger<TasksController> logger) : BaseController(logger)
     {
         [HttpGet]
         [ProducesResponseType(typeof(ApiResponse<List<TaskResponse>>), StatusCodes.Status200OK)]
@@ -48,6 +48,12 @@ namespace OpslyApi.Controllers.v1
         {
             return NoContent();
         }
-    
+
+        [HttpGet("statuses")]
+        [ProducesResponseType(typeof(ApiResponse<List<string>>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetStatuses()
+        {
+            return Ok();
+        }
     }
 }
