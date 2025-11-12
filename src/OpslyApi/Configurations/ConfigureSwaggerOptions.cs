@@ -9,10 +9,7 @@ namespace OpslyApi.Configurations
     {
         private readonly IApiVersionDescriptionProvider _provider;
 
-        public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider)
-        {
-            _provider = provider;
-        }
+        public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) => _provider = provider;
 
         public void Configure(SwaggerGenOptions options)
         {

@@ -5,7 +5,7 @@ namespace OpslyApi.DTOs.Workflows
         public string Name { get; set; }
         public string Description { get; set; }
         public List<string> Tasks { get; set; }
-        public object OnFailure { get; set; }
+        public OnFailureAction OnFailure { get; set; }
     }
     
     public class OnFailureAction

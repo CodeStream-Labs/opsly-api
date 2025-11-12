@@ -1,6 +1,6 @@
 namespace OpslyApi.DTOs
 {
-    public class ApiResponse<T>
+    public class ApiResponse<T> where T : class
     {
         public bool Success { get; set; }
         public string Message { get; set; }
