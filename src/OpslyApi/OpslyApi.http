@@ -1,6 +1,162 @@
 @OpslyApi_HostAddress = http://localhost:5242
+@Version = 1
 
-GET {{OpslyApi_HostAddress}}/weatherforecast/
+# ========== TASKS ENDPOINTS ==========
+
+### Get Tasks (with filters and pagination)
+GET {{OpslyApi_HostAddress}}/api/v{{Version}}/tasks?pageNumber=1&pageSize=10
 Accept: application/json
+
+### Get Task by ID
+GET {{OpslyApi_HostAddress}}/api/v{{Version}}/tasks/task-id-123
+Accept: application/json
+
+### Create Task
+POST {{OpslyApi_HostAddress}}/api/v{{Version}}/tasks
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Deploy Application",
+  "type": "deployment",
+  "config": {
+    "command": "kubectl apply -f deployment.yaml",
+    "target": "production"
+  },
+  "retryPolicy": {
+    "maxAttempts": 3,
+    "delaySeconds": 30
+  },
+  "rollbackAction": {
+    "command": "kubectl rollout undo deployment/app"
+  },
+  "dependsOn": ["task-id-456", "task-id-789"]
+}
+
+### Update Task
+PUT {{OpslyApi_HostAddress}}/api/v{{Version}}/tasks/task-id-123
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Deploy Application Updated",
+  "type": "deployment",
+  "config": {
+    "command": "kubectl apply -f deployment.yaml",
+    "target": "staging"
+  },
+  "retryPolicy": {
+    "maxAttempts": 5,
+    "delaySeconds": 60
+  },
+  "rollbackAction": {
+    "command": "kubectl rollout undo deployment/app"
+  },
+  "dependsOn": ["task-id-456"]
+}
+
+### Delete Task
+DELETE {{OpslyApi_HostAddress}}/api/v{{Version}}/tasks/task-id-123
+Accept: application/json
+
+### Get Task Statuses
+GET {{OpslyApi_HostAddress}}/api/v{{Version}}/tasks/statuses
+Accept: application/json
+
+# ========== WORKFLOWS ENDPOINTS ==========
+
+### Get Workflows (with filters and pagination)
+GET {{OpslyApi_HostAddress}}/api/v{{Version}}/workflows?pageNumber=1&pageSize=10
+Accept: application/json
+
+### Get Workflow by ID
+GET {{OpslyApi_HostAddress}}/api/v{{Version}}/workflows/workflow-id-123
+Accept: application/json
+
+### Create Workflow
+POST {{OpslyApi_HostAddress}}/api/v{{Version}}/workflows
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "CI/CD Pipeline",
+  "description": "Complete deployment workflow",
+  "tasks": ["task-id-123", "task-id-456", "task-id-789"],
+  "onFailure": {
+    "strategy": "rollback",
+    "rollbackDepth": "all"
+  }
+}
+
+### Update Workflow
+PUT {{OpslyApi_HostAddress}}/api/v{{Version}}/workflows/workflow-id-123
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "CI/CD Pipeline Updated",
+  "description": "Complete deployment workflow with monitoring",
+  "tasks": ["task-id-123", "task-id-456"],
+  "onFailure": {
+    "strategy": "stop",
+    "rollbackDepth": "partial"
+  }
+}
+
+### Delete Workflow
+DELETE {{OpslyApi_HostAddress}}/api/v{{Version}}/workflows/workflow-id-123
+Accept: application/json
+
+### Run Workflow
+POST {{OpslyApi_HostAddress}}/api/v{{Version}}/workflows/workflow-id-123/run
+Accept: application/json
+Content-Type: application/json
+
+### Validate Workflow
+POST {{OpslyApi_HostAddress}}/api/v{{Version}}/workflows/workflow-id-123/validate
+Accept: application/json
+Content-Type: application/json
+
+### Get Workflow Statuses
+GET {{OpslyApi_HostAddress}}/api/v{{Version}}/workflows/statuses
+Accept: application/json
+
+# ========== VAULTS ENDPOINTS ==========
+
+### Get Vault by ID
+GET {{OpslyApi_HostAddress}}/api/v{{Version}}/vaults/vault-id-123
+Accept: application/json
+
+### Create Vault
+POST {{OpslyApi_HostAddress}}/api/v{{Version}}/vaults
+Accept: application/json
+Content-Type: application/json
+
+{
+}
+
+### Update Vault
+PUT {{OpslyApi_HostAddress}}/api/v{{Version}}/vaults/vault-id-123
+Accept: application/json
+Content-Type: application/json
+
+{
+}
+
+### Delete Vault
+DELETE {{OpslyApi_HostAddress}}/api/v{{Version}}/vaults/vault-id-123
+Accept: application/json
+
+### Resolve Vault
+POST {{OpslyApi_HostAddress}}/api/v{{Version}}/vaults/vault-id-123/resolve
+Accept: application/json
+Content-Type: application/json
+
+# ========== EXECUTORS ENDPOINTS ==========
+
+### Get Executor Results
+POST {{OpslyApi_HostAddress}}/api/v{{Version}}/executors/executor-id-123/results
+Accept: application/json
+Content-Type: application/json
 
 ###
