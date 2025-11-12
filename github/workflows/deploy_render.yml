@@ -32,7 +32,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -f deployment/Dockerfile.api -t opsly-api .
+        docker build -f deployment/Dockerfile -t opsly-api .
 
     - name: Deploy to Render
       uses: johnbeynon/render-deploy-action@v1
