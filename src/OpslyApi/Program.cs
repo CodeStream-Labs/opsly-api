@@ -1,7 +1,10 @@
+using Application.Behaviors;
+using Application.DependencyInjection;
+using Application.DependencyInjection.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.OpenApi.Models;
 using OpslyApi.Configurations;
+using OpslyApi.Middlewares;
 
 namespace OpslyApi
 {
@@ -16,22 +19,23 @@ namespace OpslyApi
             builder.Services.AddApiVersioning(options =>
             {
                 options.DefaultApiVersion = new ApiVersion(1, 0);
-
                 options.AssumeDefaultVersionWhenUnspecified = true;
-
                 options.ReportApiVersions = true;
             });
 
             builder.Services.AddVersionedApiExplorer(options =>
             {
                 options.GroupNameFormat = "'v'VVV";
-
                 options.SubstituteApiVersionInUrl = true;
             });
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
+
+            builder.Services.AddMappers();
+            // added application layer
+            builder.Services.AddApplicationLayer();
 
             builder.Services.AddRouting(options =>
             {
@@ -59,6 +63,7 @@ namespace OpslyApi
                 });
             }
 
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();

@@ -1,3 +1,6 @@
+using Application.Queries.GetTasks;
+using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using opslyApi.Controllers;
 using OpslyApi.DTOs;
@@ -5,14 +8,23 @@ using OpslyApi.DTOs.Tasks;
 
 namespace OpslyApi.Controllers.v1
 {
-    public class TasksController(ILogger<TasksController> logger) : BaseController(logger)
+    public class TasksController(
+        ILogger<TasksController> logger, 
+        IMediator mediator, 
+        IMapper mapper) : BaseController(logger, mediator, mapper)
     {
         [HttpGet]
         [ProducesResponseType(typeof(ApiResponse<List<TaskResponse>>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResponse<>), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetTasks([FromQuery] TaskFiltersRequest filters, [FromQuery] int pageNumber, [FromQuery] int pageSize)
+        public async Task<IActionResult> GetTasks([FromQuery] GetTaskFiltersRequest filters, [FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            return Ok();
+            var command = new GetTasksQuery(
+                _mapper.Map<GetTaskFilter>(filters), 
+                pageSize, 
+                pageNumber);
+
+            var result = await _mediator.Send(command);
+
+            return Ok(result);
         }
 
         [HttpGet("{id}")]

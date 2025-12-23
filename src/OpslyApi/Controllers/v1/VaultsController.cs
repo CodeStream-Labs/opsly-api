@@ -1,3 +1,5 @@
+using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using opslyApi.Controllers;
 using OpslyApi.DTOs;
@@ -5,7 +7,10 @@ using OpslyApi.DTOs.Vaults;
 
 namespace OpslyApi.Controllers.v1
 {
-    public class VaultsController(ILogger<VaultsController> logger) : BaseController(logger)
+    public class VaultsController(
+        ILogger<VaultsController> logger, 
+        IMediator mediator,
+        IMapper mapper) : BaseController(logger, mediator, mapper)
     {
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ApiResponse<VaultResponse>), StatusCodes.Status200OK)]

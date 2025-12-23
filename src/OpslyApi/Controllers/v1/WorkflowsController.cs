@@ -1,3 +1,5 @@
+using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using opslyApi.Controllers;
 using OpslyApi.DTOs;
@@ -5,7 +7,10 @@ using OpslyApi.DTOs.Workflows;
 
 namespace OpslyApi.Controllers.v1
 {
-    public class WorkflowsController(ILogger logger) : BaseController(logger)
+    public class WorkflowsController(
+        ILogger logger, 
+        IMediator mediator,
+        IMapper mapper) : BaseController(logger, mediator, mapper)
     {
         [HttpGet]
         [ProducesResponseType(typeof(ApiResponse<List<WorkflowResponse>>), StatusCodes.Status200OK)]

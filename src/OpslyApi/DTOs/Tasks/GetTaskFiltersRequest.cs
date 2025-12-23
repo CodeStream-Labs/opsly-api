@@ -1,6 +1,6 @@
 namespace OpslyApi.DTOs.Tasks
 {
-    public class TaskFiltersRequest
+    public class GetTaskFiltersRequest
     {
         public string Status { get; set; }
         public DateTime? CreatedAfter { get; set; }
